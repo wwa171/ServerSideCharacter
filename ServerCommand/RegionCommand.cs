@@ -24,12 +24,11 @@ namespace ServerSideCharacter.ServerCommand
 
 		public override string Usage
 		{
-			get { return "/region <create/share/delete> <region name> [player name/player id]"; }
+			get { return "/region <create/share/delete> [region name]\nIf using 'share' you should provide player's id"; }
 		}
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			args = Utils.ParseArgs(args);
 			if (args[0] == "create")
 			{
 				if ((ServerSideCharacter.TilePos1 != Vector2.Zero) && (ServerSideCharacter.TilePos2 != Vector2.Zero))
@@ -46,15 +45,10 @@ namespace ServerSideCharacter.ServerCommand
 			else if (args[0] == "share")
 			{
 				string name = args[1];
-				int who = Utils.TryGetPlayerID(args[2]);
-				if (who == -1)
+				int id = Convert.ToByte(args[2]);
+				if (id != Main.myPlayer)
 				{
-					Main.NewText("Player not found", Color.Red);
-					return;
-				}
-				if (who != Main.myPlayer)
-				{
-					MessageSender.SendRegionShare(Main.myPlayer, name, who);
+					MessageSender.SendRegionShare(Main.myPlayer, name, id);
 				}
 				else
 				{

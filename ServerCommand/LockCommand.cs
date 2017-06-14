@@ -1,7 +1,6 @@
 ﻿using System;
 using Terraria.ModLoader;
 using Terraria;
-using Microsoft.Xna.Framework;
 
 namespace ServerSideCharacter.ServerCommand
 {
@@ -29,14 +28,7 @@ namespace ServerSideCharacter.ServerCommand
 
 		public override void Action(CommandCaller caller, string input, string[] args)
 		{
-			args = Utils.ParseArgs(args);
-			int who = Utils.TryGetPlayerID(args[0]);
-			if (who == -1)
-			{
-				Main.NewText("Player not found", Color.Red);
-				return;
-			}
-			MessageSender.SendLockCommand(Main.myPlayer, who, Convert.ToInt32(args[1]));
+			MessageSender.SendLockCommand(Main.myPlayer, Convert.ToInt32(args[0]), Convert.ToInt32(args[1]));
 		}
 	}
 }
